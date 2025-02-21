@@ -12,7 +12,7 @@ class TicTacToeGUI:
         self.game_active = False
 
     def init_gui(self):
-        self.master.title("增强型井字棋AI")
+        self.master.title("井字棋AI")
         self.canvas = tk.Canvas(self.master, width=300, height=300, bg='white')
         self.canvas.pack(pady=20)
         self.draw_board()
@@ -38,7 +38,7 @@ class TicTacToeGUI:
         self.ai.reset()
         self.canvas.delete("all")
         self.draw_board()
-        self.status_var.set("你的回合（X）")
+        self.status_var.set("你的回合")
         self.play_btn.config(state=tk.DISABLED)
         self.train_btn.config(state=tk.DISABLED)
 
@@ -52,10 +52,8 @@ class TicTacToeGUI:
         self.status_var.set("训练中...")
 
         def training_thread():
-            # 修改回调函数接收三个参数
-            def callback(episode, avg_reward, win_rate):  # ← 添加win_rate参数
+            def callback(episode, avg_reward, win_rate):
                 self.master.after(0, lambda: self.status_var.set(
-                    # 在状态显示中添加胜率
                     f"训练进度：{episode / 100:.1f}千局 | 平均回报：{avg_reward:.2f}"
                 ))
 
@@ -130,7 +128,7 @@ class TicTacToeGUI:
     def update_status(self):
         x_count = self.ai.board.count('X')
         o_count = self.ai.board.count('O')
-        status = "玩家回合（X）" if x_count == o_count else "AI回合（O）"
+        status = "你的回合" if x_count == o_count else "AI回合（O）"
         self.status_var.set(f"{status} | X:{x_count} O:{o_count}")
 
 
