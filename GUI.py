@@ -12,7 +12,7 @@ class TicTacToeGUI:
         self.game_active = False
 
     def init_gui(self):
-        self.master.title("井字棋AI")
+        self.master.title("井字棋")
         self.canvas = tk.Canvas(self.master, width=300, height=300, bg='white')
         self.canvas.pack(pady=20)
         self.draw_board()

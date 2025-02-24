@@ -57,13 +57,12 @@ class EnhancedTicTacToeAI:
         return list(set(threats))
 
     def choose_action(self, state):
-        # 1. 优先检测玩家威胁
+        #优先选择有威胁的地方下
         opponent = 'X'
         threats = self.find_immediate_threats(opponent)
         if threats:
-            return random.choice(threats)  # 随机选择一个威胁位置封堵
+            return random.choice(threats)
 
-        # 2. 无威胁时使用原逻辑
         self.epsilon = max(self.min_epsilon, self.epsilon * self.epsilon_decay)
         if random.random() < self.epsilon:
             return self.expert_move('O')
@@ -79,7 +78,6 @@ class EnhancedTicTacToeAI:
         opponent = 'O' if player == 'X' else 'X'
         available = self.available_actions()
 
-        # 精确威胁检测（新增逻辑）
         threats = []
         for pattern in self.win_patterns:
             a, b, c = pattern
@@ -105,24 +103,6 @@ class EnhancedTicTacToeAI:
                 return pos
 
         return random.choice(available)
-
-    def find_double_threat_move(self, player):
-
-        for a in self.available_actions():
-            temp = self.board.copy()
-            temp[a] = player
-            if self.count_potential_wins(temp, player) >= 2:
-                return a
-        return None
-
-    def count_potential_wins(self, board, player):
-        count = 0
-        for p in self.win_patterns:
-            if (board[p[0]] == player or board[p[0]] == ' ') and \
-                    (board[p[1]] == player or board[p[1]] == ' ') and \
-                    (board[p[2]] == player or board[p[2]] == ' '):
-                count += 1
-        return count
 
     def get_reward(self, player):
 
